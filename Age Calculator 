@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Age Genie 🎂</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #ffecd2, #fcb69f);
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #ff6f61;
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 40px;
+        }
+
+        input {
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            width: 250px;
+            margin: 10px 0;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 12px 25px;
+            border-radius: 12px;
+            background-color: #ff6f61;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff3b2e;
+            transform: scale(1.05);
+        }
+
+        #result {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            margin-top: 30px;
+            font-size: 1.1em;
+            text-align: center;
+            white-space: pre-wrap;
+        }
+
+        #footer {
+            margin-top: 25px;
+            font-size: 0.9em;
+            color: #444;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎉 AGE GENIE 🎂</h1>
+
+    <label for="name">Enter your Name:</label>
+    <input type="text" id="name" placeholder="Your Name">
+
+    <label for="year">Birth Year:</label>
+    <input type="number" id="year" placeholder="e.g., 2005">
+
+    <label for="month">Birth Month (1-12):</label>
+    <input type="number" id="month" placeholder="1-12">
+
+    <label for="day">Birth Day (1-31):</label>
+    <input type="number" id="day" placeholder="1-31">
+
+    <button onclick="calculateAge()">Calculate Age</button>
+
+    <pre id="result"></pre>
+
+    <!-- Footer (Hidden until result shown) -->
+    <div id="footer">
+        <p>📞 Contact: 8262838161</p>
+        <p>© Made by <strong>Nilkanth...!!</strong> 💻</p>
+    </div>
+
+    <script>
+        function calculateAge() {
+            let name = document.getElementById('name').value;
+            let birthYear = parseInt(document.getElementById('year').value);
+            let birthMonth = parseInt(document.getElementById('month').value);
+            let birthDay = parseInt(document.getElementById('day').value);
+
+            if(!name || !birthYear || !birthMonth || !birthDay){
+                document.getElementById('result').textContent = "Please fill all fields! 😅";
+                document.getElementById('footer').style.display = "none";
+                return;
+            }
+
+            let today = new Date();
+            let currentYear = today.getFullYear();
+            let currentMonth = today.getMonth() + 1;
+            let currentDay = today.getDate();
+
+            let ageYears = currentYear - birthYear;
+            let ageMonths = currentMonth - birthMonth;
+            let ageDays = currentDay - birthDay;
+
+            if(ageDays < 0){
+                ageMonths--;
+                ageDays += 30;
+            }
+
+            if(ageMonths < 0){
+                ageYears--;
+                ageMonths += 12;
+            }
+
+            let message = 
+                `Name: ${name}\n` +
+                `Birth Date: ${birthDay}-${birthMonth}-${birthYear}\n` +
+                `Current Date: ${currentDay}-${currentMonth}-${currentYear}\n` +
+                `Your Age: ${ageYears} years, ${ageMonths} months, ${ageDays} days 🎉\n`;
+
+            // If below 18
+            if (ageYears < 18) {
+                let eighteenthBirthday = new Date(birthYear + 18, birthMonth - 1, birthDay);
+                let diff = Math.floor((eighteenthBirthday - today) / (1000 * 60 * 60 * 24));
+                let yearsLeft = Math.floor(diff / 365);
+                let monthsLeft = Math.floor((diff % 365) / 30);
+                let daysLeft = diff - (yearsLeft * 365) - (monthsLeft * 30);
+
+                message += `\n⏳ You will turn 18 after ${yearsLeft} years, ${monthsLeft} months, and ${daysLeft} days! 🎯`;
+            }
+
+            // If above 50
+            if (ageYears >= 50) {
+                message += `\n🌸🌺 Wow! You are experienced and blooming beautifully! 🌼🌻`;
+            }
+
+            document.getElementById('result').textContent = message;
+
+            // Show footer after result
+            document.getElementById('footer').style.display = "block";
+        }
+    </script>
+
+</body>
+</html>
